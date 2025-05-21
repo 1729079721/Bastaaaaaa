@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>I Love You</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #eac4cc;
+      font-family: 'Arial', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .basta {
+      font-size: 32px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    .love {
+      position: relative;
+      width: 320px;
+      height: 360px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .love h1 {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #d6336c;
+      font-size: 24px;
+      text-shadow: 0 1px 2px #00000020;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    .block {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .block heart {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      background: url("heart.avif");
+      background-size: contain;
+      background-repeat: no-repeat;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .character {
+      position: absolute;
+      bottom: 50px;
+      left: 10px;
+      width: 80px;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 1.2s;
+    }
+
+    .biu {
+      position: absolute;
+      bottom: 100px;
+      left: 70px;
+      font-size: 18px;
+      color: #ff69b4;
+      font-weight: bold;
+      animation: float 2s infinite ease-in-out;
+      opacity: 0;
+      transition: opacity 1.2s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(-10px); opacity: 0.6; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="basta">BASTAAAAAAA</div>
+
+  <div class="love">
+    <img src="character.png" alt="Cute character" class="character" id="character">
+    <span class="biu" id="biu">biu 💘</span>
+    <div class="block"></div>
+    <h1 id="message">I Love You</h1>
+  </div>
+
+  <script>
+    const block = document.querySelector('.block');
+    const title = document.getElementById('message');
+    const character = document.getElementById('character');
+    const biu = document.getElementById('biu');
+
+    const heartMap = [
+      [0,1,1,0,0,1,1,0],
+      [1,1,1,1,1,1,1,1],
+      [1,1,1,1,1,1,1,1],
+      [1,1,1,1,1,1,1,1],
+      [0,1,1,1,1,1,1,0],
+      [0,0,1,1,1,1,0,0],
+      [0,0,0,1,1,0,0,0],
+      [0,0,0,0,1,0,0,0]
+    ];
+
+    let hearts = [];
+
+    heartMap.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell === 1) {
+          const heart = document.createElement('heart');
+          heart.style.left = `${x * 40}px`;
+          heart.style.top = `${y * 40}px`;
+          block.appendChild(heart);
+          hearts.push(heart);
+        }
+      });
+    });
+
+    function showHearts(index = 0) {
+      if (index < hearts.length) {
+        hearts[index].style.opacity = 1;
+        setTimeout(() => showHearts(index + 1), 300);
+      } else {
+        setTimeout(() => {
+          title.style.opacity = 1;
+          setTimeout(() => {
+            character.style.opacity = 1;
+            biu.style.opacity = 1;
+          }, 1500);
+        }, 1200);
+      }
+    }
+
+    let started = false;
+    document.body.addEventListener('click', () => {
+      if (!started) {
+        started = true;
+        showHearts();
+      }
+    });
+  </script>
+</body>
+</html>
